@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none"
+     role="img" aria-label="Enoida">
+  <title>Enoida</title>
+  <!-- The ring is the credential: closed on every side but one. -->
+  <path d="M 25.801 11.006 A 11 11 0 1 0 25.801 20.994"
+        stroke="currentColor" stroke-width="2.75" stroke-linecap="round"/>
+  <!-- The one bit that leaves, sitting in the opening. -->
+  <circle cx="27.4" cy="16" r="2.6" fill="currentColor"/>
+</svg>
