@@ -1,0 +1,413 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Enoida — la vérification d'âge qui ne collecte aucune identité</title>
+<meta name="description" content="Vérifiez que vos utilisateurs sont majeurs sans collecter de pièce d'identité. Enoida vérifie une preuve cryptographique issue du portefeuille d'identité du visiteur et renvoie une réponse binaire, accompagnée d'un reçu signé pour votre régulateur.">
+<link rel="canonical" href="https://enoida.fr/fr/">
+
+<link rel="alternate" hreflang="en" href="https://enoida.fr/">
+<link rel="alternate" hreflang="fr" href="https://enoida.fr/fr/">
+<link rel="alternate" hreflang="x-default" href="https://enoida.fr/">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%20%3Cstyle%3E.m%7Bstroke%3A%230a0a0a%7D.d%7Bfill%3A%230a0a0a%7D%40media%28prefers-color-scheme%3Adark%29%7B.m%7Bstroke%3A%23fafafa%7D.d%7Bfill%3A%23fafafa%7D%7D%3C%2Fstyle%3E%20%3Cpath%20class%3D%22m%22%20d%3D%22M25.801%2011.006A11%2011%200%201%200%2025.801%2020.994%22%20fill%3D%22none%22%20stroke-width%3D%223.25%22%20stroke-linecap%3D%22round%22%2F%3E%20%3Ccircle%20class%3D%22d%22%20cx%3D%2227.4%22%20cy%3D%2216%22%20r%3D%222.9%22%2F%3E%20%3C%2Fsvg%3E">
+<link rel="mask-icon" href="/favicon.svg" color="#0a0a0a">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://enoida.fr/fr/">
+<meta property="og:site_name" content="Enoida">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="en_GB">
+<meta property="og:title" content="Vérifiez que vos utilisateurs sont majeurs. Sans jamais détenir leur identité.">
+<meta property="og:description" content="La loi vous demande de vérifier l'âge. Elle ne vous demande pas de collecter des passeports. Un appel d'API, une réponse, un reçu signé pour votre régulateur.">
+<meta property="og:image" content="https://enoida.fr/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Enoida — la vérification d'âge qui ne collecte aucune identité">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Vérifiez que vos utilisateurs sont majeurs. Sans jamais détenir leur identité.">
+<meta name="twitter:description" content="Vérification d'âge conforme au droit français et européen, sans collecte de pièce d'identité.">
+<meta name="twitter:image" content="https://enoida.fr/og.png">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("enoida-theme");
+      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  })();
+</script>
+
+<link rel="stylesheet" href="/assets/site.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://enoida.fr/fr/#webpage",
+      "url": "https://enoida.fr/fr/",
+      "name": "Enoida — la vérification d'âge qui ne collecte aucune identité",
+      "inLanguage": "fr",
+      "isPartOf": { "@id": "https://enoida.fr/#website" },
+      "publisher": { "@id": "https://enoida.fr/#organization" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://enoida.fr/fr/#faq",
+      "inLanguage": "fr",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Comment vérifier l'âge d'un utilisateur sans collecter de pièce d'identité ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le portefeuille d'identité de l'utilisateur produit une preuve cryptographique qu'une attestation émise par un émetteur reconnu indique que son titulaire dépasse le seuil d'âge. Le site ne reçoit que le verdict de cette preuve — vrai ou faux — et un reçu signé. Aucun nom, aucune date de naissance, aucun numéro de document et aucune photographie ne sont transmis : le site n'a donc rien à conserver, rien à sécuriser et rien à notifier."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qu'est-ce que le double anonymat ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le double anonymat désigne deux séparations simultanées : le site reçoit la preuve de la majorité mais ne connaît pas l'identité de l'internaute, et le fournisseur de la solution de vérification connaît l'identité de l'internaute mais ne sait pas quels sites il visite. Le référentiel technique de l'Arcom impose aux services concernés de proposer au moins une solution en double anonymat."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qu'est-ce qui change le 1er septembre 2026 en France ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En application de la loi sur la majorité numérique adoptée définitivement le 21 juillet 2026, à compter du 1er septembre 2026 les mineurs de quinze ans ne peuvent plus créer de compte sur un réseau social en France. À compter du 1er janvier 2027, après un délai de quatre mois, l'interdiction s'étend aux comptes déjà existants : les plateformes doivent donc aussi vérifier leur base d'utilisateurs. La loi ne prescrit pas de méthode technique de vérification."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "La vérification d'âge est-elle compatible avec le RGPD ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Elle ne pose problème que si la méthode collecte au-delà de ce que l'obligation exige. L'obligation porte sur un seul fait : l'utilisateur dépasse-t-il un seuil d'âge. Collecter une pièce d'identité pour établir un booléen est difficilement défendable au regard du principe de minimisation. Recevoir une preuve plutôt qu'une identité satisfait simultanément l'obligation de vérification et l'obligation de minimisation."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<header class="topbar" id="topbar">
+  <div class="shell topbar-inner">
+    <a class="wordmark" href="/fr/">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M 25.801 11.006 A 11 11 0 1 0 25.801 20.994"
+              stroke="currentColor" stroke-width="2.75" stroke-linecap="round"/>
+        <circle class="bit" cx="27.4" cy="16" r="2.6" fill="currentColor"/>
+      </svg>
+      <span>Enoida</span>
+    </a>
+
+    <div class="chrome">
+      <div class="seg" role="group">
+        <span class="sr-only" id="lang-label">Langue</span>
+        <a href="/" hreflang="en" lang="en" aria-describedby="lang-label">EN</a>
+        <a href="/fr/" hreflang="fr" lang="fr" aria-current="true" aria-describedby="lang-label">FR</a>
+      </div>
+
+      <div class="seg" role="radiogroup" aria-label="Thème" data-theme-picker>
+        <button type="button" role="radio" data-theme-value="light" aria-checked="false" aria-label="Clair" title="Clair">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.5"/>
+            <path d="M12 2.5v2M12 19.5v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2.5 12h2M19.5 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+        </button>
+        <button type="button" role="radio" data-theme-value="dark" aria-checked="false" aria-label="Sombre" title="Sombre">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>
+          </svg>
+        </button>
+        <button type="button" role="radio" data-theme-value="system" aria-checked="true" aria-label="Selon le système" title="Selon le système">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="8.5"/>
+            <path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor" stroke="none"/>
+          </svg>
+        </button>
+      </div>
+
+      <a class="pill" href="mailto:contact@enoida.fr?subject=Enoida%20-%20v%C3%A9rification%20d%27%C3%A2ge">
+        Nous écrire <span class="arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <div class="shell hero">
+    <div class="col stack">
+      <p class="tag">Vérification d'âge · France &amp; UE</p>
+      <h1>Vérifiez que vos utilisateurs sont majeurs. Sans jamais détenir leur identité.</h1>
+      <p class="lede">
+        La loi française vous impose de vérifier l'âge. Elle ne vous impose pas de collecter
+        des passeports. Enoida vérifie une preuve cryptographique issue du portefeuille
+        d'identité de l'utilisateur et renvoie une réponse, accompagnée d'un reçu signé pour
+        votre régulateur.
+      </p>
+      <div class="actions">
+        <a class="pill" href="mailto:contact@enoida.fr?subject=Enoida%20-%20v%C3%A9rification%20d%27%C3%A2ge">
+          Nous écrire <span class="arrow" aria-hidden="true">&rarr;</span>
+        </a>
+        <a class="pill pill-ghost" href="#integration">Voir l'intégration</a>
+      </div>
+    </div>
+
+    <div class="panel reveal" id="panel"
+         data-live-state="Divulgation" data-done-state="Transmis au site"
+         data-live-foot="Tout ce qui précède reste sur l'appareil."
+         data-done-foot="Le reste n'a jamais quitté l'appareil.">
+      <div class="panel-head">
+        <p class="tag">Dans le portefeuille</p>
+        <p class="tag" id="panel-state">Divulgation</p>
+      </div>
+      <div class="panel-body">
+        <ul class="fields" id="fields">
+          <li class="field" data-hold="false"><span class="k">given_name</span><span class="v">Camille</span></li>
+          <li class="field" data-hold="false"><span class="k">family_name</span><span class="v">Bertrand</span></li>
+          <li class="field" data-hold="false"><span class="k">birth_date</span><span class="v">1994-03-11</span></li>
+          <li class="field" data-hold="false"><span class="k">document_number</span><span class="v">FR8842019</span></li>
+          <li class="field" data-hold="false"><span class="k">resident_address</span><span class="v">12 rue de Lyon, Paris</span></li>
+          <li class="field" data-hold="false"><span class="k">nationality</span><span class="v">FR</span></li>
+          <li class="field" data-hold="false"><span class="k">portrait</span><span class="v">&lt;binaire&gt;</span></li>
+          <li class="field is-answer" data-hold="true"><span class="k">age_over_18</span><span class="v">true</span></li>
+        </ul>
+      </div>
+      <div class="panel-foot">
+        <span id="foot-text">Tout ce qui précède reste sur l'appareil.</span>
+        <button class="replay" id="replay" type="button">Rejouer</button>
+      </div>
+    </div>
+  </div>
+
+  <section id="why-now">
+    <div class="shell">
+      <div class="head col reveal">
+        <p class="tag">Pourquoi maintenant</p>
+        <h2>Deux échéances françaises, et aucune n'est négociable.</h2>
+      </div>
+      <div class="context reveal">
+        <div class="context-item">
+          <p class="when">1<sup>er</sup> septembre 2026</p>
+          <p>
+            En application de la loi sur la majorité numérique, les mineurs de quinze ans ne
+            peuvent plus créer de compte, et les comptes existants doivent être traités avant
+            le 1<sup>er</sup> janvier. La loi ne désigne aucune méthode : le choix vous
+            revient, et il doit satisfaire la CNIL autant que le régulateur.
+          </p>
+        </div>
+        <div class="context-item">
+          <p class="when">En vigueur depuis 2025</p>
+          <p>
+            Le référentiel de l'Arcom impose aux sites concernés de proposer au moins une
+            méthode en double anonymat, opérée par un tiers indépendant du site. Le 29 juillet
+            2026, l'Arcom est intervenue contre 31 sites supplémentaires, leur laissant
+            quinze jours avant blocage et déréférencement.
+          </p>
+        </div>
+      </div>
+      <p class="more reveal">
+        <a href="/fr/loi-septembre-2026/">Lire l'analyse complète des deux régimes, avec les
+        sources <span class="arrow" aria-hidden="true">&rarr;</span></a>
+      </p>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="shell">
+      <div class="head col reveal">
+        <p class="tag">Comment ça marche</p>
+        <h2>Trois parties, et aucune n'en apprend assez pour que ce soit un problème.</h2>
+      </div>
+      <div class="steps reveal">
+        <div class="step">
+          <p class="step-n">01 &nbsp;/&nbsp; Le site demande</p>
+          <p>
+            Un site légalement tenu de vérifier l'âge appelle Enoida au lieu de collecter
+            lui-même des documents. Il ne détient aucune donnée d'identité, n'a donc rien à
+            protéger, et une fuite ne peut pas exposer ce qui n'a jamais été stocké.
+          </p>
+        </div>
+        <div class="step">
+          <p class="step-n">02 &nbsp;/&nbsp; Le portefeuille prouve</p>
+          <p>
+            Le portefeuille d'identité du visiteur produit une preuve à divulgation nulle :
+            la démonstration mathématique qu'une attestation émise par un émetteur reconnu
+            indique <em>majeur</em>, sans rien révéler d'autre — pas même la date de
+            naissance dont la réponse est tirée.
+          </p>
+        </div>
+        <div class="step">
+          <p class="step-n">03 &nbsp;/&nbsp; Nous répondons</p>
+          <p>
+            Enoida vérifie la signature de l'émetteur, la chaîne de certificats, l'état de
+            révocation et la preuve elle-même, puis renvoie oui ou non avec un reçu signé que
+            le site conserve pour son régulateur. Le reçu ne contient aucune donnée
+            personnelle.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="anonymity">
+    <div class="shell split">
+      <div class="head col reveal" style="margin-bottom: 0;">
+        <p class="tag">Double anonymat</p>
+        <h2>Structurel, pas déclaratif.</h2>
+      </div>
+      <div class="stack reveal">
+        <p class="lede">
+          Le site apprend que son visiteur est majeur, et rien de plus. L'autorité qui a émis
+          l'attestation n'apprend jamais quel site a posé la question.
+        </p>
+        <p class="fine">
+          Aucune des deux parties ne peut reconstituer la moitié de l'autre, et aucune n'a à
+          nous faire confiance pour s'en abstenir — l'architecture ne transporte pas la donnée
+          qui rendrait le rapprochement possible. C'est ce que le référentiel technique de
+          l'Arcom exige d'un système de vérification de l'âge. Enoida implémente Longfellow,
+          le schéma à divulgation nulle retenu par l'application de vérification d'âge de la
+          Commission européenne.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="deliverables">
+    <div class="shell">
+      <div class="head col reveal">
+        <p class="tag">Ce que vous obtenez</p>
+        <h2>Tout ce qu'il faut pour satisfaire un régulateur, et rien à conserver.</h2>
+      </div>
+      <div class="offer reveal">
+        <div class="offer-item">
+          <h3>Un point d'accès de vérification</h3>
+          <p>
+            Hébergé, multi-tenant, avec limitation de débit par partie utilisatrice et une
+            politique propre à chaque client. Auto-hébergeable à partir du même binaire si
+            vous ne pouvez pas dépendre de nous à l'exécution.
+          </p>
+        </div>
+        <div class="offer-item">
+          <h3>Un reçu signé pour chaque contrôle</h3>
+          <p>
+            Court, vérifiable, et dépourvu de données personnelles. Il prouve à votre
+            régulateur qu'un contrôle a eu lieu, sans que vous conserviez quoi que ce soit
+            sur la personne contrôlée. Quiconque détient un reçu peut le vérifier contre notre
+            jeu de clés publié.
+          </p>
+        </div>
+        <div class="offer-item">
+          <h3>Un SDK navigateur sans dépendances</h3>
+          <p>
+            Un appel. Aucun paquet à l'exécution : votre équipe sécurité peut tout lire en une
+            après-midi, et votre revue de chaîne d'approvisionnement devient une formalité
+            plutôt qu'un projet.
+          </p>
+        </div>
+        <div class="offer-item">
+          <h3>Un dossier de conformité par client</h3>
+          <p>
+            Généré depuis votre configuration signée en production, et non rédigé à la main :
+            un tableau exigence par exigence, votre flux de données, votre politique de
+            conservation. Le document que votre conseil réclame, produit à partir de ce qui
+            tourne réellement.
+          </p>
+        </div>
+      </div>
+      <dl class="facts reveal" style="margin-top: 2.75rem;">
+        <div class="fact">
+          <dd>0</dd>
+          <dt>Donnée personnelle conservée<span class="qual">le reçu n'en contient aucune</span></dt>
+        </div>
+        <div class="fact">
+          <dd>1</dd>
+          <dt>Appel d'API pour intégrer<span class="qual">plus un proxy sur votre serveur</span></dt>
+        </div>
+        <div class="fact">
+          <dd>582</dd>
+          <dt>Tests automatisés<span class="qual">exécutés à chaque modification</span></dt>
+        </div>
+        <div class="fact">
+          <dd>0</dd>
+          <dt>Code <span lang="en">unsafe</span><span class="qual">garanti par le compilateur, pas par une règle</span></dt>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="integration">
+    <div class="shell split">
+      <div class="head col reveal" style="margin-bottom: 0;">
+        <p class="tag">Intégration</p>
+        <h2>Un appel dans la page, un proxy sur votre serveur.</h2>
+        <p class="fine">
+          Le SDK n'a aucune dépendance à l'exécution : un auditeur peut le lire intégralement.
+          Votre serveur relaie un unique point d'accès pour garder votre clé hors de la page ;
+          une implémentation de référence fonctionnelle est fournie avec le code source.
+        </p>
+      </div>
+      <div class="reveal">
+        <pre class="code"><i>// Navigateur - toute l'intégration côté client.</i>
+import { requestAgeProof } from <b>"@enoida/verify-js"</b>;
+
+const { verified, receipt } = await requestAgeProof({
+  sessionEndpoint: <b>"/age/session"</b>,
+  ageOver: <b>18</b>,
+});</pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" style="border-top: 0;">
+    <div class="shell">
+      <div class="closer reveal">
+        <p class="tag" style="color: inherit; opacity: 0.6;">Commencer</p>
+        <h2>Dites-nous ce que vous devez respecter, et pour quand.</h2>
+        <p class="col">
+          Nous vous dirons franchement si Enoida convient, ce que l'intégration représente et
+          ce qu'elle coûterait. Si votre échéance est septembre, dites-le dès la première
+          ligne : cela change ce que nous recommandons.
+        </p>
+        <div class="actions">
+          <a class="pill" href="mailto:contact@enoida.fr?subject=Enoida%20-%20v%C3%A9rification%20d%27%C3%A2ge">
+            Nous écrire <span class="arrow" aria-hidden="true">&rarr;</span>
+          </a>
+          <a class="pill pill-quiet" href="#integration">Voir l'intégration</a>
+        </div>
+        <p class="fine aside">
+          <a href="mailto:contact@enoida.fr?subject=Enoida%20-%20v%C3%A9rification%20d%27%C3%A2ge">contact@enoida.fr</a>
+          - un ingénieur répond, généralement le jour même.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="shell foot">
+    <p class="fine col" style="margin: 0;">
+      De ἓν οἶδα ὅτι οὐδὲν οἶδα - <em>je sais une chose : que je ne sais rien.</em>
+      Le vérificateur apprend exactement un bit, et il est construit pour ne pas pouvoir en
+      apprendre davantage.
+    </p>
+    <ul class="foot-links">
+      <li><a href="/fr/loi-septembre-2026/">L'échéance de septembre</a></li>
+      <li><a href="/" hreflang="en" lang="en">English</a></li>
+      <li><a href="mailto:contact@enoida.fr?subject=Enoida">Contact</a></li>
+      <li><a href="https://github.com/enoida">GitHub</a></li>
+      <li><a href="https://ageverification.dev">Profil UE</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script src="/assets/site.js" defer></script>

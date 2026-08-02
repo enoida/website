@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <url>
+    <loc>https://enoida.fr/</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enoida.fr/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://enoida.fr/fr/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enoida.fr/"/>
+  </url>
+
+  <url>
+    <loc>https://enoida.fr/fr/</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enoida.fr/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://enoida.fr/fr/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enoida.fr/"/>
+  </url>
+
+  <url>
+    <loc>https://enoida.fr/september-2026/</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enoida.fr/september-2026/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://enoida.fr/fr/loi-septembre-2026/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enoida.fr/september-2026/"/>
+  </url>
+
+  <url>
+    <loc>https://enoida.fr/fr/loi-septembre-2026/</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enoida.fr/september-2026/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://enoida.fr/fr/loi-septembre-2026/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enoida.fr/september-2026/"/>
+  </url>
+
+</urlset>

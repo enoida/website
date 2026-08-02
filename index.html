@@ -1,553 +1,124 @@
-<title>Enoida — age verification without identity collection</title>
-<meta name="description" content="Age verification for French and EU regulation, without collecting identity documents. One API call, a signed receipt for your regulator, and no personal data to store.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Enoida — age verification that never collects identity</title>
+<meta name="description" content="Verify your users are adults without collecting identity documents. Enoida checks a cryptographic proof from the visitor's identity wallet and returns one answer plus a signed receipt for your regulator. Built for the French Arcom référentiel and the 1 September 2026 deadline.">
 <link rel="canonical" href="https://enoida.fr/">
 
-<!-- Mark, inlined so it needs no request and inverts with the browser theme. -->
+<link rel="alternate" hreflang="en" href="https://enoida.fr/">
+<link rel="alternate" hreflang="fr" href="https://enoida.fr/fr/">
+<link rel="alternate" hreflang="x-default" href="https://enoida.fr/">
+
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%20%3Cstyle%3E.m%7Bstroke%3A%230a0a0a%7D.d%7Bfill%3A%230a0a0a%7D%40media%28prefers-color-scheme%3Adark%29%7B.m%7Bstroke%3A%23fafafa%7D.d%7Bfill%3A%23fafafa%7D%7D%3C%2Fstyle%3E%20%3Cpath%20class%3D%22m%22%20d%3D%22M25.801%2011.006A11%2011%200%201%200%2025.801%2020.994%22%20fill%3D%22none%22%20stroke-width%3D%223.25%22%20stroke-linecap%3D%22round%22%2F%3E%20%3Ccircle%20class%3D%22d%22%20cx%3D%2227.4%22%20cy%3D%2216%22%20r%3D%222.9%22%2F%3E%20%3C%2Fsvg%3E">
 <link rel="mask-icon" href="/favicon.svg" color="#0a0a0a">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://enoida.fr/">
 <meta property="og:site_name" content="Enoida">
-<meta property="og:locale" content="fr_FR">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:title" content="Verify your users are adults. Never hold their identity.">
-<meta property="og:description" content="French law requires you to check age. It does not require you to collect passports. Enoida verifies a proof from the user's identity wallet and returns one answer, plus a signed receipt for your regulator.">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="French law requires you to check age. It does not require you to collect passports. One API call, one answer, and a signed receipt for your regulator.">
+<meta property="og:image" content="https://enoida.fr/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Enoida — age verification that never collects identity">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Verify your users are adults. Never hold their identity.">
 <meta name="twitter:description" content="Age verification for French and EU regulation, without collecting identity documents.">
+<meta name="twitter:image" content="https://enoida.fr/og.png">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
 
-<style>
-  /* ================================================================ tokens */
-  :root {
-    color-scheme: light dark;
+<script>
+  /* Applied before first paint so a dark-theme visitor never sees a white flash. Kept inline
+     and tiny for the same reason — an external file would be a render-blocking round trip. */
+  (function () {
+    try {
+      var t = localStorage.getItem("enoida-theme");
+      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  })();
+</script>
 
-    --ground:   #ffffff;
-    --surface:  #fafafa;
-    --ink:      #0a0a0a;
-    --ink-soft: #404040;
-    --muted:    #737373;
-    --rule:     #e5e5e5;
-    --rule-firm:#d4d4d4;
-    --invert-bg:#0a0a0a;
-    --invert-fg:#ffffff;
-    --shadow:   0 1px 2px rgb(0 0 0 / 0.04), 0 24px 48px -24px rgb(0 0 0 / 0.12);
+<link rel="stylesheet" href="/assets/site.css">
 
-    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
-            Arial, sans-serif;
-    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
-            "Liberation Mono", monospace;
-
-    --shell:   68rem;
-    --measure: 40rem;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --ground:   #0a0a0a;
-      --surface:  #141414;
-      --ink:      #fafafa;
-      --ink-soft: #d4d4d4;
-      --muted:    #a3a3a3;
-      --rule:     #262626;
-      --rule-firm:#333333;
-      --invert-bg:#fafafa;
-      --invert-fg:#0a0a0a;
-      --shadow:   0 1px 2px rgb(0 0 0 / 0.5), 0 24px 48px -24px rgb(0 0 0 / 0.8);
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://enoida.fr/#organization",
+      "name": "Enoida",
+      "url": "https://enoida.fr/",
+      "email": "contact@enoida.fr",
+      "logo": "https://enoida.fr/logo.svg",
+      "description": "Age verification that returns a yes-or-no answer and a signed receipt, without the relying party ever receiving identity data.",
+      "areaServed": [{ "@type": "Country", "name": "France" }, { "@type": "Place", "name": "European Union" }],
+      "knowsAbout": ["age verification", "double anonymity", "zero-knowledge proof", "ISO/IEC 18013-5 mdoc", "OpenID4VP", "EUDI wallet", "Arcom référentiel technique", "GDPR data minimisation"],
+      "sameAs": ["https://github.com/enoida"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://enoida.fr/#website",
+      "url": "https://enoida.fr/",
+      "name": "Enoida",
+      "inLanguage": ["en", "fr"],
+      "publisher": { "@id": "https://enoida.fr/#organization" }
+    },
+    {
+      "@type": "Service",
+      "name": "Age verification without identity collection",
+      "provider": { "@id": "https://enoida.fr/#organization" },
+      "serviceType": "Age verification",
+      "areaServed": { "@type": "Country", "name": "France" },
+      "description": "A hosted verification endpoint. The relying party sends one API call and receives a boolean answer plus a signed, personal-data-free receipt for its regulator."
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://enoida.fr/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How can a website verify a user's age without collecting identity documents?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The user's government identity wallet produces a cryptographic proof that a credential from a recognised issuer states the holder is over the age threshold. The website receives only that proof's verdict — true or false — and a signed receipt. No name, birth date, document number or photograph is transmitted, so the website has nothing to store, secure or notify."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is double anonymity in age verification?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Double anonymity means two separations at once: the website receives proof of age but does not learn the user's identity, and the age-verification provider knows the user's identity but does not learn which websites they visit. The French regulator Arcom requires services covered by its référentiel technique to offer at least one double-anonymity method."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What changes for French websites on 1 September 2026?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Under the digital-majority law adopted on 21 July 2026, from 1 September 2026 minors under fifteen can no longer create a social media account in France. From 1 January 2027, after a four-month period, the ban extends to accounts that already exist — so platforms must also verify their existing user base. The law does not prescribe a technical verification method."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does age verification conflict with the GDPR?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It conflicts only if the method collects more than the obligation requires. The duty is to establish one fact — whether the user is above an age threshold. Collecting an identity document to establish a single boolean is difficult to defend under the data-minimisation principle. Receiving a proof rather than an identity satisfies both the verification duty and the minimisation duty."
+          }
+        }
+      ]
     }
-  }
-  /* Explicit theme choice overrides the media query. */
-  :root[data-theme="dark"] {
-    --ground:   #0a0a0a;
-    --surface:  #141414;
-    --ink:      #fafafa;
-    --ink-soft: #d4d4d4;
-    --muted:    #a3a3a3;
-    --rule:     #262626;
-    --rule-firm:#333333;
-    --invert-bg:#fafafa;
-    --invert-fg:#0a0a0a;
-    --shadow:   0 1px 2px rgb(0 0 0 / 0.5), 0 24px 48px -24px rgb(0 0 0 / 0.8);
-  }
-  :root[data-theme="light"] {
-    --ground:   #ffffff;
-    --surface:  #fafafa;
-    --ink:      #0a0a0a;
-    --ink-soft: #404040;
-    --muted:    #737373;
-    --rule:     #e5e5e5;
-    --rule-firm:#d4d4d4;
-    --invert-bg:#0a0a0a;
-    --invert-fg:#ffffff;
-    --shadow:   0 1px 2px rgb(0 0 0 / 0.04), 0 24px 48px -24px rgb(0 0 0 / 0.12);
-  }
-
-  /* ================================================================== base */
-  * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-
-  body {
-    background: var(--ground);
-    color: var(--ink);
-    font-family: var(--sans);
-    font-size: 1rem;
-    line-height: 1.6;
-    margin: 0;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
-
-  .shell {
-    max-width: var(--shell);
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
-  @media (min-width: 48rem) { .shell { padding: 0 2.5rem; } }
-
-  .col { max-width: var(--measure); }
-
-  a { color: inherit; }
-  :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 2px; }
-
-  /* ============================================================ typography */
-  h1, h2, h3 { margin: 0; font-weight: 600; text-wrap: balance; }
-
-  h1 {
-    font-size: clamp(2.25rem, 1.2rem + 4.4vw, 3.9rem);
-    line-height: 1.04;
-    letter-spacing: -0.033em;
-  }
-
-  h2 {
-    font-size: clamp(1.65rem, 1.2rem + 1.9vw, 2.35rem);
-    line-height: 1.12;
-    letter-spacing: -0.025em;
-  }
-
-  h3 { font-size: 1.0625rem; line-height: 1.45; letter-spacing: -0.008em; }
-
-  p { margin: 0; }
-
-  .lede {
-    font-size: clamp(1.0625rem, 1rem + 0.5vw, 1.25rem);
-    line-height: 1.55;
-    color: var(--ink-soft);
-  }
-
-  .tag {
-    font-family: var(--mono);
-    font-size: 0.6875rem;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin: 0;
-  }
-
-  .fine { font-size: 0.9375rem; line-height: 1.6; color: var(--muted); }
-
-  /* =============================================================== spacing */
-  .stack-xs { display: flex; flex-direction: column; gap: 0.5rem; }
-  .stack-sm { display: flex; flex-direction: column; gap: 0.85rem; }
-  .stack    { display: flex; flex-direction: column; gap: 1.5rem; }
-  .stack-lg { display: flex; flex-direction: column; gap: 2.5rem; }
-
-  /* ================================================================ header */
-  .topbar {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    background: color-mix(in srgb, var(--ground) 88%, transparent);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.25s ease;
-  }
-  .topbar[data-scrolled="true"] { border-bottom-color: var(--rule); }
-
-  .topbar-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    height: 4.25rem;
-  }
-
-  .wordmark {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.7rem;
-    font-family: var(--mono);
-    font-size: 0.875rem;
-    font-weight: 600;
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    text-decoration: none;
-    white-space: nowrap;
-  }
-
-  /* Mark */
-  .mark { width: 1.375rem; height: 1.375rem; flex: none; overflow: visible; }
-  .mark .bit { transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1); }
-  .wordmark:hover .mark .bit { transform: translateX(2.2px); }
-  @media (prefers-reduced-motion: reduce) {
-    .mark .bit { transition: none; }
-    .wordmark:hover .mark .bit { transform: none; }
-  }
-
-  /* =============================================================== buttons */
-  .pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    height: 2.5rem;
-    padding: 0 1.25rem;
-    border-radius: 999px;
-    background: var(--invert-bg);
-    color: var(--invert-fg);
-    font-size: 0.875rem;
-    font-weight: 500;
-    text-decoration: none;
-    white-space: nowrap;
-    border: 1px solid var(--invert-bg);
-    transition: transform 0.16s ease, opacity 0.16s ease;
-  }
-  .pill:hover { opacity: 0.86; transform: translateY(-1px); }
-  .pill:active { transform: translateY(0); }
-
-  .pill-ghost {
-    background: transparent;
-    color: var(--ink);
-    border-color: var(--rule-firm);
-  }
-  .pill-ghost:hover { background: var(--surface); opacity: 1; }
-
-  .pill .arrow { transition: transform 0.16s ease; }
-  .pill:hover .arrow { transform: translateX(2px); }
-
-  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-
-  /* ================================================================== hero */
-  .hero {
-    display: flex;
-    flex-direction: column;
-    gap: 2.75rem;
-    padding: clamp(3.5rem, 8vw, 6.5rem) 0 clamp(3rem, 6vw, 4.5rem);
-  }
-
-  /* ============================================================ disclosure */
-  /* Disclosure figure */
-  .panel {
-    background: var(--surface);
-    border: 1px solid var(--rule);
-    border-radius: 14px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
-  }
-
-  .panel-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.85rem 1.25rem;
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .panel-body { padding: 1.5rem 1.25rem; }
-  @media (min-width: 40rem) { .panel-body { padding: 1.75rem 1.75rem; } }
-
-  .fields {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-    font-family: var(--mono);
-    font-size: 0.875rem;
-    line-height: 1.9;
-  }
-
-  .field {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1.5rem;
-    color: var(--muted);
-    
-    height: 1.9em;
-    overflow: hidden;
-    opacity: 1;
-  }
-
-  .field .k { white-space: nowrap; }
-  .field .v {
-    color: var(--ink-soft);
-    text-align: right;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .field.is-answer { color: var(--ink); font-weight: 600; }
-  .field.is-answer .v { color: var(--ink); font-weight: 600; }
-
-  .panel-foot {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.85rem 1.25rem;
-    border-top: 1px solid var(--rule);
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    color: var(--muted);
-  }
-
-  .replay {
-    font: inherit;
-    color: var(--muted);
-    background: none;
-    border: 0;
-    padding: 0.15rem 0.35rem;
-    margin: -0.15rem -0.35rem -0.15rem auto;
-    border-radius: 4px;
-    cursor: pointer;
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-    text-decoration-color: var(--rule-firm);
-  }
-  .replay:hover { color: var(--ink); }
-
-  /* Motion is opt-in; the finished state renders without it. */
-  @media (prefers-reduced-motion: no-preference) {
-    .animate .field {
-      transition: opacity 0.34s ease, height 0.42s cubic-bezier(0.4, 0, 0.2, 1),
-                  transform 0.34s ease, filter 0.34s ease;
-    }
-    .animate .field[data-state="gone"] {
-      opacity: 0;
-      height: 0;
-      transform: translateX(-6px);
-      filter: blur(2px);
-    }
-    .animate .field[data-state="pending"] { opacity: 0; transform: translateY(4px); }
-  }
-
-  /* ============================================================== sections */
-  section { padding: clamp(3.25rem, 7vw, 5.5rem) 0; border-top: 1px solid var(--rule); }
-
-  .head { display: flex; flex-direction: column; gap: 0.9rem; margin-bottom: 2.75rem; }
-
-  /* =============================================================== process */
-  .steps { display: grid; gap: 2rem; }
-  @media (min-width: 52rem) { .steps { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; } }
-
-  .step { display: flex; flex-direction: column; gap: 0.65rem; }
-
-  .step-n {
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--muted);
-    padding-bottom: 0.65rem;
-    border-bottom: 1px solid var(--rule);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .step p { color: var(--ink-soft); font-size: 0.9375rem; line-height: 1.65; }
-
-  /* =============================================================== offer */
-  .offer { display: grid; gap: 2.25rem 3rem; }
-  @media (min-width: 46rem) { .offer { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-
-  .offer-item { display: flex; flex-direction: column; gap: 0.5rem; }
-  .offer-item h3 { padding-bottom: 0.65rem; border-bottom: 1px solid var(--rule); }
-  .offer-item p { color: var(--ink-soft); font-size: 0.9375rem; line-height: 1.65; }
-
-  /* ============================================================== context */
-  .context {
-    display: grid;
-    gap: 1.5rem 3rem;
-    padding: 1.6rem 0 0;
-    border-top: 1px solid var(--rule);
-  }
-  @media (min-width: 46rem) { .context { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-
-  .context-item { display: flex; flex-direction: column; gap: 0.4rem; }
-  .context-item .when {
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
-    color: var(--ink);
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-  }
-  .context-item p { color: var(--ink-soft); font-size: 0.9375rem; line-height: 1.6; }
-
-  /* ================================================================= facts */
-  .facts {
-    display: grid;
-    gap: 1px;
-    background: var(--rule);
-    border: 1px solid var(--rule);
-    border-radius: 14px;
-    overflow: hidden;
-    margin: 0;
-  }
-  @media (min-width: 36rem) { .facts { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 60rem) { .facts { grid-template-columns: repeat(4, 1fr); } }
-
-  .fact {
-    background: var(--ground);
-    padding: 1.5rem 1.35rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-
-  .fact dt {
-    font-family: var(--mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    order: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-
-  .fact dd {
-    margin: 0;
-    order: 1;
-    font-size: 2rem;
-    font-weight: 600;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .fact .qual {
-    font-family: var(--sans);
-    font-size: 0.8125rem;
-    font-weight: 400;
-    line-height: 1.45;
-    color: var(--muted);
-    letter-spacing: 0;
-    text-transform: none;
-  }
-
-  /* ================================================================== code */
-  .code {
-    font-family: var(--mono);
-    font-size: 0.8125rem;
-    line-height: 1.8;
-    background: var(--surface);
-    border: 1px solid var(--rule);
-    border-radius: 12px;
-    padding: 1.35rem 1.4rem;
-    overflow-x: auto;
-    margin: 0;
-    color: var(--ink-soft);
-  }
-  .code b { color: var(--ink); font-weight: 600; }
-  .code i { color: var(--muted); font-style: normal; }
-
-  .split { display: grid; gap: 2.5rem; align-items: start; }
-  @media (min-width: 56rem) { .split { grid-template-columns: 1fr 1.15fr; gap: 3.5rem; } }
-
-  /* ================================================================== note */
-  .note {
-    border: 1px solid var(--rule);
-    border-radius: 14px;
-    padding: 1.5rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  /* A quiet onward link under a section, not a call to action competing with the closer. */
-  .more { margin: 2rem 0 0; font-size: 0.9375rem; }
-  .more a {
-    color: var(--ink);
-    text-decoration: underline;
-    text-decoration-color: var(--rule-firm);
-    text-underline-offset: 0.18em;
-    transition: text-decoration-color 0.15s ease;
-  }
-  .more a:hover { text-decoration-color: var(--ink); }
-  .more a:hover .arrow { transform: translateX(2px); }
-
-  /* ================================================================ closer */
-  .closer {
-    background: var(--invert-bg);
-    color: var(--invert-fg);
-    border-radius: 18px;
-    padding: clamp(2.25rem, 5vw, 3.5rem);
-    display: flex;
-    flex-direction: column;
-    gap: 1.35rem;
-  }
-  .closer h2 { color: var(--invert-fg); }
-  .closer p { color: color-mix(in srgb, var(--invert-fg) 72%, transparent); }
-  .closer .pill {
-    background: var(--invert-fg);
-    color: var(--invert-bg);
-    border-color: var(--invert-fg);
-  }
-  /* Secondary action on the inverted block */
-  .closer .pill-quiet {
-    background: transparent;
-    color: var(--invert-fg);
-    border-color: color-mix(in srgb, var(--invert-fg) 32%, transparent);
-  }
-  .closer .pill-quiet:hover {
-    opacity: 1;
-    border-color: color-mix(in srgb, var(--invert-fg) 60%, transparent);
-  }
-  .closer .aside { color: color-mix(in srgb, var(--invert-fg) 52%, transparent); }
-
-  /* ================================================================ footer */
-  footer { border-top: 1px solid var(--rule); padding: 2.5rem 0 3.5rem; }
-
-  .foot {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 1.5rem;
-    align-items: baseline;
-  }
-
-  .foot-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    font-family: var(--mono);
-    font-size: 0.8125rem;
-  }
-  .foot-links a { text-decoration-color: var(--rule-firm); text-underline-offset: 0.2em; }
-  .foot-links a:hover { text-decoration-color: currentColor; }
-
-  /* ========================================================= scroll reveal */
-  @media (prefers-reduced-motion: no-preference) {
-    .reveal { opacity: 0; transform: translateY(14px); }
-    .reveal.shown {
-      opacity: 1;
-      transform: none;
-      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-  }
-</style>
+  ]
+}
+</script>
 
 <header class="topbar" id="topbar">
   <div class="shell topbar-inner">
-    <a class="wordmark" href="#top">
+    <a class="wordmark" href="/">
       <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
         <path d="M 25.801 11.006 A 11 11 0 1 0 25.801 20.994"
               stroke="currentColor" stroke-width="2.75" stroke-linecap="round"/>
@@ -555,9 +126,38 @@
       </svg>
       <span>Enoida</span>
     </a>
-    <a class="pill" href="mailto:contact@enoida.fr?subject=Enoida%20-%20age%20verification">
-      Talk to us <span class="arrow" aria-hidden="true">&rarr;</span>
-    </a>
+
+    <div class="chrome">
+      <div class="seg" role="group">
+        <span class="sr-only" id="lang-label">Language</span>
+        <a href="/" hreflang="en" lang="en" aria-current="true" aria-describedby="lang-label">EN</a>
+        <a href="/fr/" hreflang="fr" lang="fr" aria-describedby="lang-label">FR</a>
+      </div>
+
+      <div class="seg" role="radiogroup" aria-label="Colour theme" data-theme-picker>
+        <button type="button" role="radio" data-theme-value="light" aria-checked="false" aria-label="Light" title="Light">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.5"/>
+            <path d="M12 2.5v2M12 19.5v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2.5 12h2M19.5 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+        </button>
+        <button type="button" role="radio" data-theme-value="dark" aria-checked="false" aria-label="Dark" title="Dark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>
+          </svg>
+        </button>
+        <button type="button" role="radio" data-theme-value="system" aria-checked="true" aria-label="Match system" title="Match system">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="8.5"/>
+            <path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor" stroke="none"/>
+          </svg>
+        </button>
+      </div>
+
+      <a class="pill" href="mailto:contact@enoida.fr?subject=Enoida%20-%20age%20verification">
+        Talk to us <span class="arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
   </div>
 </header>
 
@@ -569,9 +169,8 @@
       <h1>Verify your users are adults. Never hold their identity.</h1>
       <p class="lede">
         French law requires you to check age. It does not require you to collect
-        passports.
-        Enoida verifies a cryptographic proof from the user's government identity
-        wallet and returns one answer, plus a signed receipt for your regulator.
+        passports. Enoida verifies a cryptographic proof from the user's government
+        identity wallet and returns one answer, plus a signed receipt for your regulator.
       </p>
       <div class="actions">
         <a class="pill" href="mailto:contact@enoida.fr?subject=Enoida%20-%20age%20verification">
@@ -581,7 +180,10 @@
       </div>
     </div>
 
-    <div class="panel reveal" id="panel">
+    <div class="panel reveal" id="panel"
+         data-live-state="Disclosing" data-done-state="Sent to the site"
+         data-live-foot="Everything above stays on the device."
+         data-done-foot="Everything else never left the device.">
       <div class="panel-head">
         <p class="tag">In the wallet</p>
         <p class="tag" id="panel-state">Disclosing</p>
@@ -632,7 +234,7 @@
         </div>
       </div>
       <p class="more reveal">
-        <a href="/loi-septembre-2026">Read the full breakdown of both regimes, with
+        <a href="/september-2026/">Read the full breakdown of both regimes, with
         sources <span class="arrow" aria-hidden="true">&rarr;</span></a>
       </p>
     </div>
@@ -812,6 +414,8 @@ const { verified, receipt } = await requestAgeProof({
       The verifier learns exactly one bit, and is built so it cannot learn more.
     </p>
     <ul class="foot-links">
+      <li><a href="/september-2026/">The September deadline</a></li>
+      <li><a href="/fr/" hreflang="fr" lang="fr">Français</a></li>
       <li><a href="mailto:contact@enoida.fr?subject=Enoida">Contact</a></li>
       <li><a href="https://github.com/enoida">GitHub</a></li>
       <li><a href="https://ageverification.dev">EU AV profile</a></li>
@@ -819,108 +423,4 @@ const { verified, receipt } = await requestAgeProof({
   </div>
 </footer>
 
-<script>
-  (function () {
-    "use strict";
-
-    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    /* ---------------------------------------------------- sticky header rule */
-    var topbar = document.getElementById("topbar");
-    function onScroll() {
-      topbar.setAttribute("data-scrolled", window.scrollY > 8 ? "true" : "false");
-    }
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-
-    /* ------------------------------------------------------- scroll reveals */
-    var reveals = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
-    if (reduced.matches || !("IntersectionObserver" in window)) {
-      reveals.forEach(function (el) { el.classList.add("shown"); });
-    } else {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add("shown");
-          io.unobserve(entry.target);
-        });
-      }, { rootMargin: "0px 0px -12% 0px", threshold: 0.08 });
-      reveals.forEach(function (el) { io.observe(el); });
-    }
-
-    /* ------------------------------------------------ the disclosure figure */
-    var panel = document.getElementById("panel");
-    var state = document.getElementById("panel-state");
-    var foot = document.getElementById("foot-text");
-    var replay = document.getElementById("replay");
-    var fields = Array.prototype.slice.call(
-      document.getElementById("fields").querySelectorAll(".field")
-    );
-    var shed = fields.filter(function (f) { return f.dataset.hold === "false"; });
-    var timers = [];
-
-    function clearTimers() {
-      timers.forEach(clearTimeout);
-      timers = [];
-    }
-
-    function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
-
-    /* Finished state. */
-    function settle() {
-      shed.forEach(function (f) { f.dataset.state = "gone"; });
-      state.textContent = "Sent to the site";
-      foot.textContent = "Everything else never left the device.";
-      replay.hidden = reduced.matches;
-    }
-
-    function play() {
-      clearTimers();
-      panel.classList.add("animate");
-      state.textContent = "Disclosing";
-      foot.textContent = "Everything above stays on the device.";
-      replay.hidden = true;
-
-      fields.forEach(function (f) { f.dataset.state = "pending"; });
-
-      // Fields arrive, then are shed until only the answer remains.
-      fields.forEach(function (f, i) {
-        later(function () { f.dataset.state = "in"; }, 90 * i + 220);
-      });
-
-      var afterIn = 90 * fields.length + 620;
-      shed.forEach(function (f, i) {
-        later(function () { f.dataset.state = "gone"; }, afterIn + 150 * i);
-      });
-
-      later(function () {
-        state.textContent = "Sent to the site";
-        foot.textContent = "Everything else never left the device.";
-        replay.hidden = false;
-      }, afterIn + 150 * shed.length + 420);
-    }
-
-    if (reduced.matches) {
-      settle();
-    } else {
-      // Play only once the panel is on screen.
-      if ("IntersectionObserver" in window) {
-        var pio = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
-            pio.disconnect();
-            play();
-          });
-        }, { threshold: 0.35 });
-        pio.observe(panel);
-      } else {
-        play();
-      }
-    }
-
-    replay.addEventListener("click", play);
-    reduced.addEventListener("change", function (e) {
-      if (e.matches) { clearTimers(); panel.classList.remove("animate"); settle(); }
-    });
-  })();
-</script>
+<script src="/assets/site.js" defer></script>

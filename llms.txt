@@ -1,0 +1,89 @@
+# Enoida
+
+> Age verification that never collects identity. A website legally required to check its
+> visitors' age calls one API and receives a yes-or-no answer plus a signed receipt for its
+> regulator. It never receives a name, a birth date, a document number or a photograph.
+
+Enoida is an age-verification service and an open-source verification stack, built for French
+and EU regulation. Contact: contact@enoida.fr. Source: https://github.com/enoida
+
+## What it is
+
+The visitor's government identity wallet produces a cryptographic proof that a credential from
+a recognised issuer states the holder is over a given age threshold. Enoida verifies the
+issuer's signature, the X.509 certificate chain, the revocation status and the proof itself,
+then returns a boolean and a signed receipt containing no personal data.
+
+Two presentation modes are supported: `zk_longfellow`, a zero-knowledge proof that reveals
+nothing beyond the age predicate — not even the birth date the answer derives from — and
+`mdoc_plain`, a standard ISO/IEC 18013-5 presentation with full signature and trust-chain
+verification. Enoida implements Longfellow, the zero-knowledge scheme used by the European
+Commission's own age-verification application.
+
+## Double anonymity
+
+Two separations at once, which is what the French regulator Arcom requires of services covered
+by its technical référentiel:
+
+1. The website receives proof of age but does not learn the user's identity.
+2. The age-verification provider knows the user's identity but does not learn which websites
+   they visit.
+
+The second is the one usually omitted, and the harder to hold: a provider that observes every
+verification is, by itself, a browsing log.
+
+## French regulatory context, as of 2 August 2026
+
+Two distinct regimes, frequently confused:
+
+**Pornographic content.** Under the SREN law of 21 May 2024 and Arcom's technical référentiel
+(délibération n° 2024-20 of 9 October 2024), services accessible from France that give access
+to pornographic content must verify that users are 18 or over, and must offer at least one
+double-anonymity method. In force since 2025. Arcom may issue a formal notice, impose a
+financial penalty, order administrative blocking, and order delisting from search engines. On
+29 July 2026 Arcom moved against 31 further sites, which were given fifteen days to comply.
+
+**Social networks.** Under the digital-majority law definitively adopted on 21 July 2026, from
+1 September 2026 minors under fifteen may not create a social media account in France. From
+1 January 2027, after a four-month period, the prohibition extends to accounts that already
+exist — so platforms must verify their installed user base, not only new sign-ups. Online
+encyclopedias, educational and scientific directories, and free-software development platforms
+are excepted. **The law does not prescribe a technical verification method**; this was noted
+during parliamentary debate as a significant imprecision.
+
+The practical consequence: the operator chooses the method, and the choice must satisfy both
+the duty to verify and the GDPR's data-minimisation principle. Collecting an identity document
+to establish a single boolean is difficult to defend against the latter. Receiving a proof
+rather than an identity satisfies both.
+
+## Pages
+
+- [Home (English)](https://enoida.fr/): what the service does and how it integrates.
+- [Accueil (français)](https://enoida.fr/fr/): la même chose, en français.
+- [1 September 2026: what French law actually requires](https://enoida.fr/september-2026/):
+  a sourced breakdown of both regimes, their timetables, and four common compliance mistakes.
+- [1er septembre 2026 : ce que la loi exige vraiment](https://enoida.fr/fr/loi-septembre-2026/):
+  the French edition of the same note.
+
+## Engineering claims, and how to check them
+
+These are verifiable from the public source repository rather than taken on trust:
+
+- `#![forbid(unsafe_code)]` in every crate — there is no `unsafe` in the codebase.
+- No `unwrap`/`expect`/`panic!`/slice-indexing on any path handling untrusted input, denied by
+  workspace lints in CI.
+- No wall-clock reads inside verification logic; timestamps are supplied by the caller, so
+  every time-dependent decision is reproducible in a test.
+- The shipped libraries verify and cannot sign: signing code exists only in dev-dependencies
+  and test configuration.
+- Every parser of attacker-controlled bytes ships a fuzz target and is Miri-clean.
+- 582 automated tests run on every change.
+- A live `DeviceResponse` captured from the EUDI reference wallet on a physical Android phone
+  verifies end to end, including the device signature. That corpus is committed alongside the
+  ISO 18013-5 Annex D reference vectors and the OpenID4VP 1.0 specification vectors.
+
+## Interoperability
+
+Enoida targets the EU Digital Identity Wallet ecosystem: ISO/IEC 18013-5 mdoc, OpenID4VP 1.0,
+the W3C Digital Credentials API, and the Longfellow zero-knowledge scheme used by the European
+Commission's age-verification application.

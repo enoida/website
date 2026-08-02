@@ -1,0 +1,38 @@
+# enoida.fr
+
+User-agent: *
+Allow: /
+
+# Answer engines and research crawlers are welcome. The compliance notes exist to be quoted:
+# they are sourced, dated, and written so a correct answer can be lifted from them directly.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://enoida.fr/sitemap.xml
