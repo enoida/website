@@ -468,6 +468,18 @@
     gap: 0.75rem;
   }
 
+  /* A quiet onward link under a section, not a call to action competing with the closer. */
+  .more { margin: 2rem 0 0; font-size: 0.9375rem; }
+  .more a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--rule-firm);
+    text-underline-offset: 0.18em;
+    transition: text-decoration-color 0.15s ease;
+  }
+  .more a:hover { text-decoration-color: var(--ink); }
+  .more a:hover .arrow { transform: translateX(2px); }
+
   /* ================================================================ closer */
   .closer {
     background: var(--invert-bg);
@@ -603,22 +615,26 @@
         <div class="context-item">
           <p class="when">1 September 2026</p>
           <p>
-            Under the digital majority law, new social accounts in France must be
-            age-verified, with existing accounts swept through to January. The statute
-            points at an anonymised age token and CNIL-validated methods - which is
-            precisely the architecture below, not an adaptation of it.
+            Under the digital majority law, under-15s can no longer open a social account
+            in France, and existing accounts must be swept by 1 January. The statute names
+            no method - so the choice is yours, and it has to satisfy the CNIL as well as
+            the regulator. Proving a fact beats collecting a document.
           </p>
         </div>
         <div class="context-item">
           <p class="when">In force since 2025</p>
           <p>
             The Arcom référentiel requires adult sites to offer at least one
-            double-anonymity method, verified by a provider independent of the site. In
-            July 2026 Arcom opened action against 31 sites at once - blocking, delisting
-            and cross-border referral.
+            double-anonymity method, verified by a provider independent of the site. On
+            29 July 2026 Arcom moved against 31 more sites, giving them fifteen days
+            before blocking and delisting.
           </p>
         </div>
       </div>
+      <p class="more reveal">
+        <a href="/loi-septembre-2026">Read the full breakdown of both regimes, with
+        sources <span class="arrow" aria-hidden="true">&rarr;</span></a>
+      </p>
     </div>
   </section>
 
